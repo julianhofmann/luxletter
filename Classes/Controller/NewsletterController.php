@@ -119,7 +119,7 @@ class NewsletterController extends AbstractNewsletterController
     {
         $this->view->assignMultiple([
             'newsletter' => $newsletter,
-            'configurations' => $this->configurationRepository->findAll(),
+            'configurations' => $this->configurationRepository->findAllAuthorized(),
             'layouts' => $this->layoutService->getLayouts(),
             'newsletterpages' => $this->pageRepository->findAllNewsletterPages(),
             'categories' => $this->categoryRepository->findAllLuxletterCategories(),
@@ -179,7 +179,7 @@ class NewsletterController extends AbstractNewsletterController
     public function newAction(): void
     {
         $this->view->assignMultiple([
-            'configurations' => $this->configurationRepository->findAll(),
+            'configurations' => $this->configurationRepository->findAllAuthorized(),
             'layouts' => $this->layoutService->getLayouts(),
             'newsletterpages' => $this->pageRepository->findAllNewsletterPages(),
             'categories' => $this->categoryRepository->findAllLuxletterCategories(),
