@@ -13,6 +13,7 @@ use In2code\Luxletter\Domain\Service\SiteService;
 use In2code\Luxletter\Utility\BackendUserUtility;
 use In2code\Luxletter\Utility\DatabaseUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -97,13 +98,8 @@ class NewsletterRepository extends AbstractRepository
                 $logicalAnd[] = $query->equals('configuration', $filter->getConfiguration());
             }
         }
-        if (BackendUserUtility::isAdministrator() === false) {
-            $siteService = GeneralUtility::makeInstance(SiteService::class);
-            $logicalAnd[] = $query->in('configuration.site', array_keys($siteService->getAllowedSites()));
-        }
-        if ($logicalAnd !== []) {
-            $query->matching($query->logicalAnd(...$logicalAnd));
-        }
+        $logicalAnd[] = $query->in('configuration.site', $filter->getSitesForFilter());
+        $query->matching($query->logicalAnd(...$logicalAnd));
         return $query->execute();
     }
 
