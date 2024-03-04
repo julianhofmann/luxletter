@@ -3,23 +3,20 @@
 declare(strict_types=1);
 namespace In2code\Luxletter\Domain\Repository;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as ExceptionDbal;
 use In2code\Luxletter\Domain\Model\Usergroup;
+use In2code\Luxletter\Domain\Service\PermissionTrait;
+use In2code\Luxletter\Exception\MisconfigurationException;
+use In2code\Luxletter\Utility\ArrayUtility;
 use In2code\Luxletter\Utility\DatabaseUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
-/**
- * Class UsergroupRepository
- */
 class UsergroupRepository extends AbstractRepository
 {
-    /**
-     * @param array $usergroupIdentifiers
-     * @return QueryResultInterface
-     * @throws InvalidQueryException
-     */
-    public function findByIdentifiers(array $usergroupIdentifiers): QueryResultInterface
+    use PermissionTrait;
+
+    public function findByIdentifiersAndKeepOrderings(array $usergroupIdentifiers): array
     {
         $query = $this->createQuery();
         $query->matching($query->in('uid', $usergroupIdentifiers));
@@ -34,21 +31,19 @@ class UsergroupRepository extends AbstractRepository
      *  ]
      *
      * @return array
-     * @throws DBALException
+     * @throws ExceptionDbal
+     * @throws MisconfigurationException
      */
     public function getReceiverGroups(): array
     {
-        $groups = [];
         $queryBuilder = DatabaseUtility::getQueryBuilderForTable(Usergroup::TABLE_NAME);
-        $statement = $queryBuilder
+        $groups = $queryBuilder
             ->select('uid', 'title')
             ->from(Usergroup::TABLE_NAME)
             ->where('luxletter_receiver=1')
             ->orderBy('title', 'ASC')
-            ->execute();
-        while ($row = $statement->fetch()) {
-            $groups[$row['uid']] = $row['title'];
-        }
-        return $groups;
+            ->executeQuery()
+            ->fetchAllKeyValue();
+        return $this->filterRecords($groups, Usergroup::TABLE_NAME);
     }
 }
