@@ -48,6 +48,9 @@ class NewsletterController extends AbstractNewsletterController
     {
         $this->view->assignMultiple(
             [
+                'filter' => $filter,
+                'newsletters' => $this->newsletterRepository->findAllByFilter($filter->setLimit(10)),
+                'groupedLinksByHref' => $this->logRepository->getGroupedLinksByHref($filter->setLimit(8)),
                 'statistic' => [
                     'overallReceivers' => $this->logRepository->getNumberOfReceivers($filter),
                     'overallOpenings' => $this->logRepository->getOverallOpenings($filter),
@@ -59,9 +62,6 @@ class NewsletterController extends AbstractNewsletterController
                     'overallClickRate' => $this->logRepository->getOverallClickRate($filter),
                     'overallUnsubscribeRate' => $this->logRepository->getOverallUnsubscribeRate($filter),
                 ],
-                'filter' => $filter,
-                'groupedLinksByHref' => $this->logRepository->getGroupedLinksByHref($filter->setLimit(8)),
-                'newsletters' => $this->newsletterRepository->findAllAuthorized($filter->setLimit(10)),
             ]
         );
 
