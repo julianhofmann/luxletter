@@ -10,16 +10,13 @@ use In2code\Luxletter\Domain\Model\Log;
 use In2code\Luxletter\Domain\Model\Newsletter;
 use In2code\Luxletter\Domain\Model\Queue;
 use In2code\Luxletter\Utility\DatabaseUtility;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class NewsletterRepository extends AbstractRepository
 {
-    public function findAllAuthorized(): QueryResultInterface
+    public function findAllAuthorized(Filter $filter): QueryResultInterface
     {
         $query = $this->createQuery();
         $query->matching($query->in('configuration.site', $filter->getSitesForFilter()));

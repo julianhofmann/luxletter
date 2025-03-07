@@ -44,7 +44,7 @@ class UsergroupRepository extends AbstractRepository
             ->from(Usergroup::TABLE_NAME)
             ->where('luxletter_receiver=1')
             ->orderBy('title', 'ASC')
-            ->executeQuery()
+            ->execute()
             ->fetchAllKeyValue();
         return $this->filterRecords($groups, Usergroup::TABLE_NAME);
     }

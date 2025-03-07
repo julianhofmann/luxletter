@@ -20,7 +20,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SiteService
 {
-    protected SiteFinder $siteFinder;
+   /**
+     * @var \TYPO3\CMS\Core\Site\SiteFinder
+     */
+    protected $siteFinder;
+
 
     public function __construct(?SiteFinder $siteFinder = null)
     {

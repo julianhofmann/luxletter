@@ -268,7 +268,7 @@ class LogRepository extends AbstractRepository
             ->from(Log::TABLE_NAME)
             ->where('newsletter=' . $newsletter->getUid() . ' and user=' . $user->getUid() . ' and status=' . $status)
             ->setMaxResults(1)
-            ->executeQuery()
+            ->execute()
             ->fetchOne();
         return $uid > 0;
     }

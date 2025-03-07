@@ -44,7 +44,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->setFilter();
     }
 
-    public function dashboardAction(Filter $filter): ResponseInterface
+    public function dashboardAction(Filter $filter): void
     {
         $this->view->assignMultiple([
             'filter' => $filter,
@@ -66,7 +66,6 @@ class NewsletterController extends AbstractNewsletterController
         ]);
 
         $this->addDocumentHeaderForNewsletterController();
-        return $this->defaultRendering();
     }
 
     public function initializeListAction(): void
@@ -74,7 +73,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->setFilter();
     }
 
-    public function listAction(Filter $filter): ResponseInterface
+    public function listAction(Filter $filter): void
     {
         $this->view->assignMultiple([
             'filter' => $filter,
@@ -85,7 +84,6 @@ class NewsletterController extends AbstractNewsletterController
         ]);
 
         $this->addDocumentHeaderForNewsletterController();
-        return $this->defaultRendering();
     }
 
     public function resetFilterAction(string $redirectAction): ResponseInterface
@@ -94,7 +92,7 @@ class NewsletterController extends AbstractNewsletterController
         return $this->redirect($redirectAction);
     }
 
-    public function editAction(Newsletter $newsletter): ResponseInterface
+    public function editAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329205);
@@ -115,7 +113,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->prepareArgumentsForPersistence();
     }
 
-    public function updateAction(Newsletter $newsletter): ResponseInterface
+    public function updateAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329247);
@@ -136,7 +134,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->redirect('list');
     }
 
-    public function newAction(): ResponseInterface
+    public function newAction(): void
     {
         $this->view->assignMultiple([
             'configurations' => $this->configurationRepository->findAllAuthorized(),
@@ -152,7 +150,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->prepareArgumentsForPersistence();
     }
 
-    public function createAction(Newsletter $newsletter): ResponseInterface
+    public function createAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329276);
@@ -186,7 +184,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->redirect('list');
     }
 
-    public function disableAction(Newsletter $newsletter): ResponseInterface
+    public function disableAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329304);
@@ -197,7 +195,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->redirect('list');
     }
 
-    public function enableAction(Newsletter $newsletter): ResponseInterface
+    public function enableAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329338);
@@ -208,7 +206,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->redirect('list');
     }
 
-    public function deleteAction(Newsletter $newsletter): ResponseInterface
+    public function deleteAction(Newsletter $newsletter): void
     {
         if ($newsletter->canBeRead() === false) {
             throw new AuthenticationFailedException('You are not allowed to see this record', 1709329345);
@@ -224,7 +222,7 @@ class NewsletterController extends AbstractNewsletterController
         $this->setFilter();
     }
 
-    public function receiverAction(Filter $filter): ResponseInterface
+    public function receiverAction(Filter $filter): void
     {
         $receiverAnalysisService = GeneralUtility::makeInstance(ReceiverAnalysisService::class);
         $users = $this->userRepository->getUsersByFilter($filter->setLimit(1000));

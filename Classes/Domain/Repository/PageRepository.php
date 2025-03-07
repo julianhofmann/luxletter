@@ -42,7 +42,7 @@ class PageRepository
                     . ' and sys_language_uid=0'
                 )
                 ->orderBy('title', 'asc')
-                ->executeQuery()
+                ->execute()
                 ->fetchAllAssociative();
             if (BackendUserUtility::isAdministrator() === false) {
                 foreach ($rows as $key => $row) {
@@ -81,7 +81,7 @@ class PageRepository
                         $queryBuilder->createNamedParameter($language, PDO::PARAM_INT)
                     )
                 )
-                ->executeQuery()
+                ->execute()
                 ->fetchOne();
             /** @var string $subject */
             return $subject;
@@ -118,7 +118,7 @@ class PageRepository
                 ->select('sys_language_uid')
                 ->from(self::TABLE_NAME)
                 ->where('l10n_parent=' . $pageIdentifier)
-                ->executeQuery()
+                ->execute()
                 ->fetchFirstColumn();
             if ($this->isDefaultLanguageEnabled($pageIdentifier)) {
                 $languages = array_merge([0], $languages);
@@ -137,7 +137,7 @@ class PageRepository
                 ->select('l18n_cfg')
                 ->from(self::TABLE_NAME)
                 ->where('uid=' . (int)$pageIdentifier)
-                ->executeQuery()
+                ->execute()
                 ->fetchOne();
             return $languageConfiguration !== 1 && $languageConfiguration !== 3;
         } catch (Throwable $exception) {

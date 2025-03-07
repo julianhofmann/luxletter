@@ -5,7 +5,6 @@ namespace In2code\Luxletter\Domain\Repository;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
-use Doctrine\DBAL\Exception;
 use In2code\Luxletter\Domain\Model\Dto\Filter;
 use In2code\Luxletter\Domain\Model\User;
 use In2code\Luxletter\Domain\Model\Usergroup;

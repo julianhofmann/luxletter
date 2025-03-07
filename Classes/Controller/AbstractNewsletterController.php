@@ -229,4 +229,9 @@ abstract class AbstractNewsletterController extends ActionController
     {
         return StringUtility::removeStringPostfix($this->actionMethodName, 'Action');
     }
+
+    protected function addDocumentHeader(array $configuration): void
+    {
+
+    }
 }
